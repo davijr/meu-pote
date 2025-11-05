@@ -1,8 +1,20 @@
 # ✅ Configuração Final no Coolify - Meu Pote
 
+## ⚠️ ATENÇÃO: Configuração Obrigatória
+
+Este projeto usa **Docker Compose** com múltiplos serviços!
+
+**❌ NÃO FUNCIONA** com Dockerfile único
+**✅ DEVE USAR** `docker-compose.production.yml`
+
+> **Se você está vendo erro "next: not found"**, é porque está usando o build errado!
+> Siga as instruções abaixo **EXATAMENTE**.
+
+---
+
 ## 📊 Status das Correções
 
-✅ **TODAS AS 10 CORREÇÕES CRÍTICAS FORAM APLICADAS!**
+✅ **TODAS AS 11 CORREÇÕES CRÍTICAS FORAM APLICADAS!**
 
 O código agora está 100% pronto para deploy no Coolify. Este documento contém as instruções finais de configuração.
 
@@ -25,6 +37,7 @@ O código agora está 100% pronto para deploy no Coolify. Este documento contém
 8. ✅ **Frontend Dockerfile otimizado** (build args para `NEXT_PUBLIC_*`)
 9. ✅ **.dockerignore criados** (client e server)
 10. ✅ **Docker Compose atualizado** (build args configurados)
+11. ✅ **Dockerfile da raiz removido** (causava confusão no Coolify)
 
 ---
 
@@ -38,14 +51,22 @@ Se ainda não fez:
 # Branch: claude/setup-coolify-deploy-pipeline-011CUp1KL8aUfJrP3GDufDF8
 ```
 
-### 2. Atualizar Source no Coolify
+### 2. Configurar Build no Coolify ⚠️ CRÍTICO
 
 1. Acesse: `https://admin.davijr.com`
 2. Vá no resource **"meupote"**
-3. **Settings** > **Source**
-   - Branch: `main` (ou a branch que foi feito o merge)
-   - Build Pack: **Docker Compose**
-   - Docker Compose File: `docker-compose.production.yml`
+3. **Settings** > **General**
+   - **Build Pack**: Selecione `docker-compose` ou `dockercompose`
+   - **Port Exposes**: `3000`
+
+4. **Settings** > **Build**
+   - **Docker Compose Location**: `./` (raiz do projeto)
+   - **Docker Compose File**: `docker-compose.production.yml`
+   - **Docker Compose Command**: `docker compose` (ou `docker-compose` se usar versão antiga)
+
+5. **Settings** > **Source**
+   - **Branch**: `main` (ou a branch que foi feito o merge)
+   - **Auto Deploy**: ✅ Ativado (opcional)
 
 ### 3. Configurar Variáveis de Ambiente
 

@@ -168,6 +168,26 @@ ENV NEXT_PUBLIC_VAPID_PUBLIC_KEY=$NEXT_PUBLIC_VAPID_PUBLIC_KEY
 
 ---
 
+### 🔴 CRÍTICO (Build Blocker)
+
+#### 11. Dockerfile da raiz causa build incorreto no Coolify
+**Arquivo:** `Dockerfile` (raiz do projeto)
+**Problema:**
+- Coolify detecta Dockerfile na raiz e tenta usar ele
+- É um Dockerfile simples de desenvolvimento
+- Usa `npm ci --only=production` que **exclui Next.js** (devDependency)
+- Tenta executar `npm run build` mas Next.js não está instalado
+- Erro: `sh: 1: next: not found`
+
+**Impacto:** Build falha completamente no Coolify
+
+**Solução:**
+1. Remover o Dockerfile da raiz
+2. Configurar Coolify para usar `docker-compose.production.yml`
+3. Criar documentação clara (COOLIFY_BUILD.md)
+
+---
+
 ## ✅ Ordem de Correção
 
 1. ✅ Corrigir schema Prisma para PostgreSQL
@@ -179,12 +199,14 @@ ENV NEXT_PUBLIC_VAPID_PUBLIC_KEY=$NEXT_PUBLIC_VAPID_PUBLIC_KEY
 7. ✅ Corrigir VAPID subject
 8. ✅ Melhorar Frontend Dockerfile
 9. ✅ Criar .dockerignore
+10. ✅ Remover Dockerfile da raiz
+11. ✅ Criar documentação de build (COOLIFY_BUILD.md)
 
 ---
 
 ## ✅ Correções Aplicadas
 
-Todas as 10 correções foram implementadas com sucesso:
+Todas as 11 correções foram implementadas com sucesso:
 
 1. ✅ Schema Prisma migrado para PostgreSQL
 2. ✅ Migration inicial criada (20241105000000_init)
@@ -196,9 +218,13 @@ Todas as 10 correções foram implementadas com sucesso:
 8. ✅ Frontend Dockerfile com build args para NEXT_PUBLIC_*
 9. ✅ .dockerignore criados (client e server)
 10. ✅ Docker compose atualizado com build args
+11. ✅ Dockerfile da raiz removido + documentação criada
 
 ---
 
 **Status:** ✅ COMPLETO - Pronto para deploy!
 **Data:** 05/11/2024
-**Próximo passo:** Commit e push, depois configurar no Coolify
+**Próximo passo:**
+1. Commit e push
+2. Configurar Coolify para usar `docker-compose.production.yml`
+3. Ver instruções em COOLIFY_SETUP.md
