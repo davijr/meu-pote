@@ -3,10 +3,17 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
+// Configurar VAPID keys para push notifications
+// VAPID_SUBJECT deve ser um email no formato mailto:seu-email@dominio.com
+if (!process.env.VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY || !process.env.VAPID_SUBJECT) {
+  console.warn('⚠️  VAPID keys não configuradas! Push notifications não funcionarão.');
+  console.warn('   Configure VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY e VAPID_SUBJECT nas variáveis de ambiente.');
+}
+
 webpush.setVapidDetails(
-  'mailto:admin@meupote.com',
-  process.env.VAPID_PUBLIC_KEY || 'BEl62iUYgUivxIkv69yViEuiBIa40HI2BukQGpn9SqMfTBUmjXp1plAcqfcQIuyHdl1NurAKRHSQNC-FSDQPUrQ',
-  process.env.VAPID_PRIVATE_KEY || 'tUkzMpKWaRtQhFNw2e6EDipaBEClczaiN-739d1XYgM'
+  process.env.VAPID_SUBJECT || 'mailto:admin@meupote.davijr.com',
+  process.env.VAPID_PUBLIC_KEY || '',
+  process.env.VAPID_PRIVATE_KEY || ''
 );
 
 class NotificationService {
