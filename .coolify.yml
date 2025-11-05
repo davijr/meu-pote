@@ -1,0 +1,53 @@
+# Coolify Configuration
+# Deploy configuration for meupote application
+
+version: '1.0'
+
+# Build settings
+build:
+  type: docker-compose
+  dockerfile: docker-compose.production.yml
+
+# Domain configuration
+domains:
+  - meupote.davijr.com
+
+# Port mapping
+ports:
+  - 3000:3000  # Frontend
+
+# Health checks
+health_check:
+  enabled: true
+  path: /
+  port: 3000
+  interval: 30
+  timeout: 10
+  retries: 3
+
+# Environment variables required
+# These should be set in Coolify UI
+required_env:
+  - DATABASE_URL
+  - REDIS_URL
+  - JWT_SECRET
+  - POSTGRES_PASSWORD
+  - REDIS_PASSWORD
+  - VAPID_PUBLIC_KEY
+  - VAPID_PRIVATE_KEY
+  - VAPID_SUBJECT
+  - FRONTEND_URL
+
+# Persistent volumes
+volumes:
+  - postgres_data
+  - redis_data
+
+# Deployment strategy
+deployment:
+  strategy: rolling
+  restart_policy: unless-stopped
+
+# Networking
+network:
+  driver: bridge

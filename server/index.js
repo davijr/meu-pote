@@ -24,8 +24,8 @@ const limiter = rateLimit({
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://seu-dominio.com'] 
+  origin: process.env.NODE_ENV === 'production'
+    ? [process.env.FRONTEND_URL || 'https://meupote.davijr.com']
     : ['http://localhost:3000'],
   credentials: true
 }));

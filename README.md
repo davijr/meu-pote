@@ -142,6 +142,50 @@ npm start            # Iniciar produção
 npm run lint         # Linter
 ```
 
+## 🚀 Deploy em Produção
+
+### Coolify (Recomendado)
+
+Este projeto está configurado para deploy no Coolify com docker-compose.
+
+**Guia Completo:** Consulte [DEPLOY.md](DEPLOY.md) para instruções detalhadas.
+
+**Quick Start:**
+
+1. **Gere as secrets necessárias:**
+```bash
+bash scripts/generate-secrets.sh
+```
+
+2. **Configure o Coolify:**
+   - Source: Seu repositório Git
+   - Build Pack: Docker Compose
+   - Docker Compose File: `docker-compose.production.yml`
+   - Domain: `meupote.davijr.com`
+
+3. **Adicione as variáveis de ambiente no Coolify**
+   - Use os valores gerados pelo script acima
+   - Configure em Settings > Environment Variables
+
+4. **Deploy!**
+   - Clique em Deploy no Coolify
+   - Aguarde o build e inicialização dos containers
+
+### Outras Plataformas
+
+O projeto também pode ser deployado em:
+- **Docker Swarm** - Use `docker-compose.production.yml`
+- **Kubernetes** - Crie manifests baseados nos Dockerfiles
+- **VPS Manual** - Siga as instruções em DEPLOY.md
+
+### Arquivos de Deploy
+
+- `docker-compose.production.yml` - Compose para produção
+- `.coolify.yml` - Configuração do Coolify
+- `.env.example` - Template de variáveis de ambiente
+- `scripts/generate-secrets.sh` - Gera secrets necessárias
+- `DEPLOY.md` - Guia completo de deploy
+
 ## 📊 API Endpoints
 
 ### Autenticação
