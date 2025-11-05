@@ -1,0 +1,32 @@
+{
+  "name": "meu-pote-server",
+  "version": "1.0.0",
+  "description": "Back-end API para gerenciamento de frases",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "echo 'Build completed'",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "joi": "^17.11.0",
+    "@prisma/client": "^5.7.1",
+    "prisma": "^5.7.1",
+    "redis": "^4.6.12",
+    "node-cron": "^3.0.3",
+    "web-push": "^3.6.7",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

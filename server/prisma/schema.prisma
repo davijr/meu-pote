@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  nome      String
+  senha     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visualizacoes     Visualizacao[]
+  agendamentos      Agendamento[]
+  curtidas          Curtida[]
+  pushSubscriptions PushSubscription[]
+
+  @@map("users")
+}
+
+model Frase {
+  id          String      @id @default(cuid())
+  frase       String
+  autor       String?
+  livro       String?
+  views       Int         @default(0)
+  curtidas    Int         @default(0)
+  categoria   String      @default("OUTROS")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  visualizacoes Visualizacao[]
+  curtidasList  Curtida[]
+
+  @@map("frases")
+}
+
+model Visualizacao {
+  id      String @id @default(cuid())
+  userId  String
+  fraseId String
+  viewedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  frase Frase @relation(fields: [fraseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, fraseId])
+  @@map("visualizacoes")
+}
+
+model Curtida {
+  id      String @id @default(cuid())
+  userId  String
+  fraseId String
+  likedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  frase Frase @relation(fields: [fraseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, fraseId])
+  @@map("curtidas")
+}
+
+model Agendamento {
+  id          String    @id @default(cuid())
+  userId      String
+  horario     String
+  diasSemana  String    // JSON string: "[1,2,3,4,5]"
+  categoria   String?
+  ativo       Boolean   @default(true)
+  ultimoEnvio DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("agendamentos")
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String
+  p256dh    String
+  auth      String
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, endpoint])
+  @@map("push_subscriptions")
+}

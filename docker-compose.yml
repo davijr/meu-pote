@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/meu_pote
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=meu-pote-jwt-secret-key-2024
+      - JWT_EXPIRES_IN=7d
+      - FRONTEND_URL=http://localhost:3000
+      - VAPID_PUBLIC_KEY=BEl62iUYgUivxIkv69yViEuiBIa40HI8DLLuxN-RYpPiw38VCCPASO2lp-o8wD0ARcdaFYMcyqSJ6FXHKysVPAk
+      - VAPID_PRIVATE_KEY=tUxzMx-PKv2TLHEFEaAeWfNmAJOhEGAUGgJJHVcNf6A
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=meu_pote
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
