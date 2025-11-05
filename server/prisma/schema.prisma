@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -70,7 +70,7 @@ model Agendamento {
   id          String    @id @default(cuid())
   userId      String
   horario     String
-  diasSemana  String    // JSON string: "[1,2,3,4,5]"
+  diasSemana  Int[]     // Array de inteiros: [0,1,2,3,4,5,6] (domingo a sábado)
   categoria   String?
   ativo       Boolean   @default(true)
   ultimoEnvio DateTime?
